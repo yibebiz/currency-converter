@@ -60,15 +60,21 @@ function populateCurrencyList(currencyObject){
 
 function convertCurrency() {
 
-    let conversionRate;
- 
     const ammount = parseFloat(document.getElementById("ammount").value);
     const fromSelect = document.getElementById("fromSelect");
     const fromCode = fromSelect.options[fromSelect.selectedIndex].value;
 
     const toSelect = document.getElementById("toSelect");
-    const toCode = toSelect.options[toSelect.selectedIndex].value;
-    const toCodeText = toSelect.options[toSelect.selectedIndex].text;
+    let toCode = toSelect.options[toSelect.selectedIndex].value;
+    let [toText,toSymb] = toSelect.options[toSelect.selectedIndex].text.split(' ');
+    let toCodeText;
+    if(toSymb){
+        toCodeText = toSymb.substr(1).slice(0, -1);
+    }
+    else{
+         toCodeText=toCode;
+    }
+
 
     //TODO: if rate for the fromCode and toCode is available use it
     //check caches existence in the db
@@ -78,7 +84,7 @@ function convertCurrency() {
   fetchRates(fromCode, toCode)
     .then(function(rateJson) {
         updateCache(rateJson);
-        conversionRate = parseFloat(rateJson[`${fromCode}_${toCode}`]); //rateJson is like // {USD_ETB: 27.219999}
+        let conversionRate = parseFloat(rateJson[`${fromCode}_${toCode}`]); //rateJson is like // {USD_ETB: 27.219999}
         const result = `${toCodeText} ${ammount * conversionRate}`;
         document.getElementById("convertedValue").innerHTML = result;
     })

@@ -72,7 +72,7 @@ function convertCurrency() {
         toCodeText = toSymb.substr(1).slice(0, -1);
     }
     else{
-         toCodeText=toCode;
+         toCodeText=toCode+' ';
     }
 
 
@@ -85,7 +85,7 @@ function convertCurrency() {
     .then(function(rateJson) {
         updateCache(rateJson);
         let conversionRate = parseFloat(rateJson[`${fromCode}_${toCode}`]); //rateJson is like // {USD_ETB: 27.219999}
-        const result = `${toCodeText} ${ammount * conversionRate}`;
+        const result = `${toCodeText}${ammount * conversionRate}`;
         document.getElementById("convertedValue").innerHTML = result;
     })
     .catch(function(err) {

@@ -1,0 +1,78 @@
+.header{
+  background:darkorange;
+  margin-bottom:48px;
+  padding:16px 0;
+  display: flex;
+  justify-content:space-around;
+  color:white;
+}
+.header__title{
+  color:white;
+  font-size:48px;
+  margin:0;
+}
+
+.container{
+max-width:600px;
+margin:0 auto;
+padding:0 10px;
+}
+
+div.full-page {
+  margin: 20px;
+  padding: 20px;
+  background: ghostwhite;
+}
+
+div.input-section {
+  border: 3px none darkorchid;
+  width: 600px;
+}
+
+div.input-title {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+  border-bottom: 2px solid darkorange;
+  padding-bottom: 5px;
+  margin-top:20px;
+  display: flex;
+  justify-content: space-around;
+  
+}
+
+div.input-row {
+  border: 3px none darkolivegreen;
+  display: flex;
+}
+
+div.input-element {
+  border: 3px none darkcyan;
+  padding: 10px;
+  flex-grow: 1;
+  display:flex;
+}
+
+div.input-element input,
+div.input-element select,
+div.input-element button {
+  width: 100%;
+  border: solid 1px mediumvioletred;
+  padding: 0;
+  margin: 0;
+}
+div.input-element button {
+   background:darkorange;
+   color:white;
+   font-weight: bold;
+
+}
+
+div.input-caption {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: darkgrey;
+  font-size: 14px;
+  padding:2px 5px;
+}
+
+

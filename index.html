@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="text/javascript" src="js/currencyConvert.js"></script>
+  <title>Currency Converter @Yibeltal (mws-group-32, mws - team - 158)</title>
+</head>
+
+<body>
+  <div class="header">
+    <div class="container">
+      <h1 class="header__title">Currency Converter</h1>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="input-section">
+      <div class="input-row">
+        <div class="input-element">
+          <div class="input-caption">Value</div>
+          <input type="text" id="ammount">
+        </div>
+        <div class="input-element">
+          <div class="input-caption">From</div>
+          <select id="fromSelect">
+           
+          </select>
+        </div>
+    
+        <div class="input-element">
+          <div class="input-caption">To</div>
+          <select id="toSelect">
+     
+          </select>
+        </div>
+        <div class="input-element">
+          <button onclick="convertCurrency()">Convert</button>
+        </div>
+    
+      </div>
+    
+      <div class="input-title">
+        <span id="convertedValue"></span>
+      </div>
+    
+    </div>
+
+  </div>
+
+<script>
+    document.onload=getCurrencyLists().then(function (currencies) {
+      populateCurrencyList(currencies);
+      
+    });
+
+</script>
+  
+</body>
+</html>

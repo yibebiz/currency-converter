@@ -1,6 +1,3 @@
-  let dbPromise = idb.open("converter-db", 1, function(upgradeDb) {
-    upgradeDb.createObjectStore("rates");
-  });
 
 function fetchRateFromApi(fromCurrency, toCurrency) {
   fromCurrency = encodeURIComponent(fromCurrency);
@@ -19,7 +16,6 @@ function fetchRateFromApi(fromCurrency, toCurrency) {
           let tx = db.transaction("rates", "readwrite");
           let rateStore = tx.objectStore("rates");
           const rateValues = Object.entries(myJson)[0];
-          console.log(rateValues);
           rateStore.put(rateValues[1], rateValues[0]);
         });
     return Object.entries(myJson)[0][1];
@@ -119,3 +115,8 @@ fetchRateFromDb(fromCode, toCode).then(function(resp){
 });
 
 }
+
+let dbPromise = idb.open("converter-db", 1, function(upgradeDb) {
+  upgradeDb.createObjectStore("rates");
+});
+

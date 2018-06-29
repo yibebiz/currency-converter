@@ -5,7 +5,11 @@
   <meta charset="utf-8" />
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/style.css">
+  
+  <script type="text/javascript" src="/js/idb.js"></script>
   <script type="text/javascript" src="js/currencyConvert.js"></script>
+  <script type="text/javascript" src="js/swController.js"></script>
+  
   <title>Currency Converter @Yibeltal (mws-group-32, mws - team - 158)</title>
 </head>
 
@@ -38,13 +42,13 @@
           </select>
         </div>
         <div class="input-element">
-          <button onclick="convertCurrency()">Convert</button>
+          <button onclick="handleConversion()">Convert</button>
         </div>
     
       </div>
     
       <div class="input-title">
-        <span id="convertedValue"></span>
+        <p id="convertedValue"></p>
       </div>
     
     </div>
@@ -56,7 +60,7 @@
       populateCurrencyList(currencies);
       
     });
-
+    
 </script>
   
 </body>

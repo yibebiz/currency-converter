@@ -74,5 +74,13 @@ div.input-caption {
   font-size: 14px;
   padding:2px 5px;
 }
-
+#convertedValue{
+  margin:0;
+  padding:0;
+}
+.error{
+  color:red;
+  font-style: italic;
+  font-size:small;
+}
 

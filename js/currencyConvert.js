@@ -1,43 +1,61 @@
-function fetchRates(fromCurrency, toCurrency) {
+  let dbPromise = idb.open("converter-db", 1, function(upgradeDb) {
+    upgradeDb.createObjectStore("rates");
+  });
 
-    fromCurrency = encodeURIComponent(fromCurrency);
-    toCurrency = encodeURIComponent(toCurrency);
-    const query = `${fromCurrency}_${toCurrency}`;
-    
-    const url = `https://free.currencyconverterapi.com/api/v5/convert?q=${query}&compact=ultra`;
-    
-    return fetch(url).then(function(resp){
-        //console.log(resp.clone().json());
-        return resp.json();
-    }).then(function(myJson){
-      return myJson;
+function fetchRateFromApi(fromCurrency, toCurrency) {
+  fromCurrency = encodeURIComponent(fromCurrency);
+  toCurrency = encodeURIComponent(toCurrency);
+  const query = `${fromCurrency}_${toCurrency}`;
+
+  const url = `https://free.currencyconverterapi.com/api/v5/convert?q=${query}&compact=ultra`;
+
+  return fetch(url)
+    .then(function(resp) {
+      //console.log(resp.clone().json());
+      return resp.json();
     })
-    .catch(function(err){
-        console.log("Error: ",err);
-        return false;
+    .then(function(myJson) {
+        dbPromise.then(function(db) {
+          let tx = db.transaction("rates", "readwrite");
+          let rateStore = tx.objectStore("rates");
+          const rateValues = Object.entries(myJson)[0];
+          console.log(rateValues);
+          rateStore.put(rateValues[1], rateValues[0]);
+        });
+    return Object.entries(myJson)[0][1];
     })
+    .catch(function(err) {
+      console.log("Error: ", err);
+      return false;
+    });
 }
-function getCurrencyLists(){
-     const url = 'https://free.currencyconverterapi.com/api/v5/currencies';
 
-     return fetch(url)
-       .then(function(resp) {
-         //console.log(resp.clone().json());
-         return resp.json();
-       }).then(function(jsonData){
-           return jsonData["results"];
-       })
-       .catch(function(err) {
-         console.log("Error: ", err);
-         return false;
-       });
+function fetchRateFromDb(fromCode,toCode){
+ return dbPromise.then(function(db) {
+   let tx = db.transaction("rates");
+   let rateStore = tx.objectStore("rates");
+   return rateStore.get(`${fromCode}_${toCode}`);
+
+ });
+}
+
+function getCurrencyLists() {
+  const url = "https://free.currencyconverterapi.com/api/v5/currencies";
+
+  return fetch(url)
+    .then(function(resp) {
+      //console.log(resp.clone().json());
+      return resp.json();
+    })
+    .then(function(jsonData) {
+      return jsonData["results"];
+    })
+    .catch(function(err) {
+      console.log("Error: ", err);
+      return false;
+    });
 }
 function populateCurrencyList(currencyObject){
-    const fromSelect = document.getElementById("fromSelect");
-    
-
-    //var i = x.selectedIndex;
-    //document.getElementById("demo").innerHTML = x.options[i].text;
     for (const [key, value] of Object.entries(currencyObject)) {
         let currencySymbol=currencyObject[key]["currencySymbol"]?`  (${currencyObject[key]["currencySymbol"]})`:'';
 
@@ -58,45 +76,46 @@ function populateCurrencyList(currencyObject){
     }
 }
 
-function convertCurrency() {
+function handleConversion() {
+  const ammount = parseFloat(document.getElementById("ammount").value);
+  const fromSelect = document.getElementById("fromSelect");
+  const fromCode = fromSelect.options[fromSelect.selectedIndex].value;
 
-    const ammount = parseFloat(document.getElementById("ammount").value);
-    const fromSelect = document.getElementById("fromSelect");
-    const fromCode = fromSelect.options[fromSelect.selectedIndex].value;
+  const toSelect = document.getElementById("toSelect");
+  let toCode = toSelect.options[toSelect.selectedIndex].value;
+  let [toText, toSymb] = toSelect.options[toSelect.selectedIndex].text.split(" ");
+  let toCodeText;
+  if (toSymb) {
+    toCodeText = toSymb.substr(1).slice(0, -1);
+  } else {
+    //toCodeText = toCode + " "; //for display perpose
+    toCodeText='';
+  }
 
-    const toSelect = document.getElementById("toSelect");
-    let toCode = toSelect.options[toSelect.selectedIndex].value;
-    let [toText,toSymb] = toSelect.options[toSelect.selectedIndex].text.split(' ');
-    let toCodeText;
-    if(toSymb){
-        toCodeText = toSymb.substr(1).slice(0, -1);
-    }
-    else{
-         toCodeText=toCode+' ';
-    }
+  if (isNaN(ammount)) {
+    const msg = '<span class="error">Please enter valid ammount!</span>';
+    document.getElementById("convertedValue").innerHTML = msg;
+    return;
+  }
 
-
-    //TODO: if rate for the fromCode and toCode is available use it
-    //check caches existence in the db
-    //getCachedRate(fromCode,toCode);
-    //else, fetch it from online, do the indexing and use it 
-    
-  fetchRates(fromCode, toCode)
-    .then(function(rateJson) {
-        updateCache(rateJson);
-        let conversionRate = parseFloat(rateJson[`${fromCode}_${toCode}`]); //rateJson is like // {USD_ETB: 27.219999}
-        const result = `${toCodeText}${ammount * conversionRate}`;
+fetchRateFromDb(fromCode, toCode).then(function(resp){
+    const rateFromDb = parseFloat(resp);
+    if (!isNaN(rateFromDb)) {
+      const result = ammount * rateFromDb;
+      document.getElementById("convertedValue").innerHTML = result;
+    } 
+    else {
+        fetchRateFromApi(fromCode, toCode).then(function(resp) {
+        const rateFromApi = parseFloat(resp);
+        if (!isNaN(rateFromApi)) {
+        const result = ammount * rateFromApi;
         document.getElementById("convertedValue").innerHTML = result;
-    })
-    .catch(function(err) {
-      console.log("Error: ", err);
-    });
-}
-function updateCache(rateJson) {
-  //Cache the latest rate values
-  console.log(rateJson);
-}
-function getCachedRate(fromCode,toCode){
-    //return rate for the value of pair in db
-     
+        }
+        else{
+            document.getElementById("convertedValue").innerHTML = "Oops, couldn't help you this way.";
+        }
+      });
+    }
+});
+
 }

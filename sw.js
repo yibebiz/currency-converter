@@ -1,17 +1,17 @@
- var staticCacheName = "currency-converter-static-v2";
+const staticCacheName = "currency-converter-static-v3";
  
 self.addEventListener("install", function(event) {
 console.log("Service Worker registered")
    event.waitUntil(
     caches.open(staticCacheName).then(function(cache) {
       return cache.addAll([
-        "/css/reset.css",
-        "/css/style.css",
-        "/js/currencyConvert.js",
-        "/js/swController.js",
-        "/sw.js",
-        "/index.html",
-        "/js/idb.js"
+        "css/reset.css",
+        "css/style.css",
+        "js/currencyConvert.js",
+        "js/swController.js",
+        "sw.js",
+        "index.html",
+        "js/idb.js"
       ]);
     })
   );

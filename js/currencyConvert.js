@@ -108,7 +108,8 @@ fetchRateFromDb(fromCode, toCode).then(function(resp){
         document.getElementById("convertedValue").innerHTML = result;
         }
         else{
-            document.getElementById("convertedValue").innerHTML = "Oops, couldn't help you this way.";
+            const err='<span class="error">Error: it seems you are offline and rate is not in the local db</span>';
+            document.getElementById("convertedValue").innerHTML = err;
         }
       });
     }

@@ -1,4 +1,4 @@
- var staticCacheName = "currency-converter-static-v3";
+ var staticCacheName = "currency-converter-static-v2";
  
 self.addEventListener("install", function(event) {
 console.log("Service Worker registered")

@@ -1,7 +1,7 @@
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function() {
     navigator.serviceWorker
-      .register("/sw.js")
+      .register("sw.js")
       .then(function(swRegistrationObject) {
         if (!navigator.serviceWorker.controller) {
           //This page is not controlled by this service worker, hence do nothing, just return

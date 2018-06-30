@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container" id="main-body">
 
     <div class="input-section">
       <div class="input-row">
@@ -55,11 +55,7 @@
   </div>
 
 <script>
-    document.onload=getCurrencyLists().then(function (currencies) {
-      populateCurrencyList(currencies);
-      
-    });
-    
+    document.onload=getCurrencyLists().then(currencies=> populateCurrencyList(currencies));
 </script>
   
 </body>

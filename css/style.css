@@ -17,7 +17,9 @@ max-width:600px;
 margin:0 auto;
 padding:0 10px;
 }
-
+#main-body{
+  min-height: 300px;
+}
 div.full-page {
   margin: 20px;
   padding: 20px;
@@ -27,6 +29,7 @@ div.full-page {
 div.input-section {
   border: 3px none darkorchid;
   width: 600px;
+
 }
 
 div.input-title {
@@ -86,3 +89,7 @@ div.input-caption {
   font-size:small;
 }
 
+.footer{
+  margin-top:60px;
+  padding:60px 0;
+}

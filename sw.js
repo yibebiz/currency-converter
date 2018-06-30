@@ -1,7 +1,6 @@
-const staticCacheName = "currency-converter-static-v3";
+const staticCacheName = "currency-converter-static-v1";
  
-self.addEventListener("install", function(event) {
-console.log("Service Worker registered")
+self.addEventListener("install", event=> {
    event.waitUntil(
     caches.open(staticCacheName).then(function(cache) {
       return cache.addAll([
@@ -18,45 +17,31 @@ console.log("Service Worker registered")
  
 });
 
-self.addEventListener("activate", function(event) {
+self.addEventListener("activate", event=> {
   event.waitUntil(
-    caches.keys().then(function(cacheNames) {
+    caches.keys().then(cacheNames => {
       return Promise.all(
-        cacheNames.filter(function(cacheName) {
-            return (
-              cacheName.startsWith("currency-converter") && !(staticCacheName===cacheName)
-            );
-          })
-          .map(function(cacheName) {
-            return caches.delete(cacheName);
-          })
+        cacheNames.filter(cacheName => cacheName.startsWith("currency-converter") && !(staticCacheName===cacheName))
+          .map(cacheName => caches.delete(cacheName))
       );
     })
   );
 });
 
 
- self.addEventListener('fetch', function(event) {
-  
+ self.addEventListener('fetch', event => {
     event.respondWith(
-      caches.open(staticCacheName).then(function(cache){
+      caches.open(staticCacheName).then(cache =>{
         return cache.match(event.request)
-        .then(function(response) {
-          // caches.match() always resolves
-          // but in case of success response will have value
+        .then(response => {
           if (response !== undefined) {
             return response;
           } else {
-            return fetch(event.request).then(function (response) {
+            return fetch(event.request).then(response =>{
               let responseClone = response.clone();
-              
-              caches.open(staticCacheName).then(function (cache) {
-                cache.put(event.request, responseClone);
-              });
+              caches.open(staticCacheName).then(cache=> cache.put(event.request, responseClone));
               return response;
-            }).catch(function () {
-              return caches.match('Ooops!, that is an error');
-            });
+            }).catch( ()=> caches.match('Ooops!, that is an error'));
           }
         })
       })
@@ -67,7 +52,7 @@ self.addEventListener("activate", function(event) {
   //is a change in the sw, however, this should be 
   //triggered by consent of the user using toas message.
 
-  self.addEventListener('message', function(event) {
+  self.addEventListener('message', event=> {
     if (event.data.action === 'skipWaiting') {
       self.skipWaiting();
     }

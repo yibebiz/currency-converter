@@ -7,12 +7,9 @@ function fetchRateFromApi(fromCurrency, toCurrency) {
   const url = `https://free.currencyconverterapi.com/api/v5/convert?q=${query}&compact=ultra`;
 
   return fetch(url)
-    .then(function(resp) {
-      //console.log(resp.clone().json());
-      return resp.json();
-    })
-    .then(function(myJson) {
-        dbPromise.then(function(db) {
+    .then(resp =>  resp.json())
+    .then(myJson=> {
+        dbPromise.then(db => {
           let tx = db.transaction("rates", "readwrite");
           let rateStore = tx.objectStore("rates");
           const rateValues = Object.entries(myJson)[0];
@@ -20,14 +17,14 @@ function fetchRateFromApi(fromCurrency, toCurrency) {
         });
     return Object.entries(myJson)[0][1];
     })
-    .catch(function(err) {
+    .catch(err=> {
       console.log("Error: ", err);
       return false;
     });
 }
 
 function fetchRateFromDb(fromCode,toCode){
- return dbPromise.then(function(db) {
+ return dbPromise.then(db=> {
    let tx = db.transaction("rates");
    let rateStore = tx.objectStore("rates");
    return rateStore.get(`${fromCode}_${toCode}`);
@@ -39,14 +36,14 @@ function getCurrencyLists() {
   const url = "https://free.currencyconverterapi.com/api/v5/currencies";
 
   return fetch(url)
-    .then(function(resp) {
+    .then(resp=> {
       //console.log(resp.clone().json());
       return resp.json();
     })
-    .then(function(jsonData) {
+    .then(jsonData => {
       return jsonData["results"];
     })
-    .catch(function(err) {
+    .catch(err => {
       console.log("Error: ", err);
       return false;
     });
@@ -94,14 +91,14 @@ function handleConversion() {
     return;
   }
 
-fetchRateFromDb(fromCode, toCode).then(function(resp){
+fetchRateFromDb(fromCode, toCode).then(resp => {
     const rateFromDb = parseFloat(resp);
     if (!isNaN(rateFromDb)) {
       const result = ammount * rateFromDb;
       document.getElementById("convertedValue").innerHTML = result;
     } 
     else {
-        fetchRateFromApi(fromCode, toCode).then(function(resp) {
+        fetchRateFromApi(fromCode, toCode).then(resp => {
         const rateFromApi = parseFloat(resp);
         if (!isNaN(rateFromApi)) {
         const result = ammount * rateFromApi;
@@ -117,7 +114,5 @@ fetchRateFromDb(fromCode, toCode).then(function(resp){
 
 }
 
-let dbPromise = idb.open("converter-db", 1, function(upgradeDb) {
-  upgradeDb.createObjectStore("rates");
-});
+let dbPromise = idb.open("converter-db", 1, upgradeDb => upgradeDb.createObjectStore("rates"));
 

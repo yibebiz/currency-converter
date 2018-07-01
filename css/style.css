@@ -62,6 +62,7 @@ div.input-element button {
   border: solid 1px mediumvioletred;
   padding: 0;
   margin: 0;
+  color:teal;
   
 }
 
@@ -75,9 +76,13 @@ div.input-element button {
 
 div.input-caption {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  color: darkgrey;
-  font-size: 14px;
+  color: teal;
+  font-size: 12px;
+  opacity:0.8;
   padding:2px 5px;
+}
+#amount{
+  color:teal;
 }
 #convertedValue{
   margin:0;
@@ -88,6 +93,9 @@ div.input-caption {
   min-width:90px;
   min-height: 20px;
   border: 2px solid darkorange;
+}
+option,select{
+color:teal;
 }
 #rate{
   color:green;
@@ -102,6 +110,13 @@ div.input-caption {
 }
 
 .footer{
-  margin-top:60px;
-  padding:60px;
+  display: flex;
+  justify-content:space-around;
+  padding-top:20px;
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:60px;   /* Height of the footer */
+  color:white;
+  background: teal;
 }

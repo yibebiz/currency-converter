@@ -71,7 +71,6 @@ function populateCurrencyList(currencyObject){
 
 function handleConversion() {
   const ammountInput = document.getElementById("ammount").value;
-  console.log(ammountInput)
 
   if (!ammountInput.match(/^\s*-?[1-9]\d*(\.\d)?\s*$/)) { //checking if input is not containing only numeric values.
     const msg = '<span class="error">Please enter valid ammount!</span>';

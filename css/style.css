@@ -4,10 +4,10 @@
   padding:16px 0;
   display: flex;
   justify-content:space-around;
-  color:white;
+  color:teal;
 }
 .header__title{
-  color:white;
+  color:teal;
   font-size:48px;
   margin:0;
 }
@@ -36,7 +36,6 @@ div.input-title {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   font-size: 22px;
-  border-bottom: 2px solid darkorange;
   padding-bottom: 5px;
   margin-top:20px;
   display: flex;
@@ -67,9 +66,10 @@ div.input-element button {
 }
 
 div.input-element button {
-   background:darkorange;
-   color:white;
+   background:#ff8c00;
+   color:teal;
    font-weight: bold;
+   padding:0 10px;
 
 }
 
@@ -81,7 +81,19 @@ div.input-caption {
 }
 #convertedValue{
   margin:0;
-  padding:0;
+  color:teal;
+  font-weight: bolder;
+  background:#fdffef;
+  padding:10px;
+  min-width:90px;
+  min-height: 20px;
+  border: 2px solid darkorange;
+}
+#rate{
+  color:green;
+  display: flex;
+  justify-content:space-around;
+  font-style: italic;
 }
 .error{
   color:red;
@@ -91,5 +103,5 @@ div.input-caption {
 
 .footer{
   margin-top:60px;
-  padding:60px 0;
+  padding:60px;
 }

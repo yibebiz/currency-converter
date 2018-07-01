@@ -72,7 +72,8 @@ function populateCurrencyList(currencyObject){
 function handleConversion() {
   const ammountInput = document.getElementById("ammount").value;
 
-  if (!ammountInput.match(/^\s*-?[1-9]\d*(\.\d)?\s*$/)) { //checking if input is not containing only numeric values.
+  if (!ammountInput.match(/[0-9]|\./)) {
+    //checking if input is not containing only numeric values.
     const msg = '<span class="error">Please enter valid ammount!</span>';
     document.getElementById("convertedValue").innerHTML = msg;
     return;
@@ -96,17 +97,19 @@ fetchRateFromDb(fromCode, toCode).then(resp => {
     const rateFromDb = parseFloat(resp);
     if (!isNaN(rateFromDb)) {
       const result = ammount * rateFromDb;
-      document.getElementById("convertedValue").innerHTML = result;
+      document.getElementById("convertedValue").innerHTML = `${toCode}: ${result.toFixed(3)}`;
+      document.getElementById("rate").innerHTML = `<span>(Exchange rate = ${rateFromDb})</span>`;
     } 
     else {
         fetchRateFromApi(fromCode, toCode).then(resp => {
         const rateFromApi = parseFloat(resp);
         if (!isNaN(rateFromApi)) {
         const result = ammount * rateFromApi;
-        document.getElementById("convertedValue").innerHTML = result;
+      document.getElementById("convertedValue").innerHTML = `${toCode}: ${result.toFixed(3)}`;
+      document.getElementById("rate").innerHTML = `<span>(Exchange rate = ${rateFromApi})</span>`;
         }
         else{
-            const err='<span class="error">Error: it seems you are offline and rate is not in the local db</span>';
+            const err='<span class="error">Error: it seems you are offline and rate is not in the local db, yet.</span>';
             document.getElementById("convertedValue").innerHTML = err;
         }
       });

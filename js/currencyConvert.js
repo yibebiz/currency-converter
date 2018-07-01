@@ -49,19 +49,21 @@ function getCurrencyLists() {
     });
 }
 function populateCurrencyList(currencyObject){
-    for (const [key, value] of Object.entries(currencyObject)) {
+    for (const [key, value] of (Object.entries(currencyObject)).sort()) {
         let currencySymbol=currencyObject[key]["currencySymbol"]?`  (${currencyObject[key]["currencySymbol"]})`:'';
 
         const fromOption = document.createElement("option");
-        fromOption.text = `${key}${currencySymbol}`;
+        //fromOption.text = `${key}${currencySymbol}`;
+        fromOption.text = key;
         fromOption.value = key;
+        
 
         let fromSelect = document.getElementById("fromSelect");
         fromSelect.appendChild(fromOption);
 
          const toOption = document.createElement("option");
 
-         toOption.text = `${key}${currencySymbol}`;
+         toOption.text = key;
          toOption.value = key;
 
         let toSelect = document.getElementById("toSelect");
@@ -70,6 +72,8 @@ function populateCurrencyList(currencyObject){
 }
 
 function handleConversion() {
+  document.getElementById("convertedValue").innerHTML ='<span class="waiting"> Please wait...</span>';
+  document.getElementById("rate").innerHTML = '';
   const ammountInput = document.getElementById("ammount").value;
 
   if (!ammountInput.match(/[0-9]|\./)) {
@@ -90,14 +94,14 @@ function handleConversion() {
     toCodeText = toSymb.substr(1).slice(0, -1);
   } else {
     //toCodeText = toCode + " "; //for display perpose
-    toCodeText='';
+    toCodeText = `${toCode}: `;
   }
 
 fetchRateFromDb(fromCode, toCode).then(resp => {
     const rateFromDb = parseFloat(resp);
     if (!isNaN(rateFromDb)) {
       const result = ammount * rateFromDb;
-      document.getElementById("convertedValue").innerHTML = `${toCode}: ${result.toFixed(3)}`;
+      document.getElementById("convertedValue").innerHTML = `${toCodeText}${result.toFixed(3)}`;
       document.getElementById("rate").innerHTML = `<span>(Exchange rate = ${rateFromDb})</span>`;
     } 
     else {

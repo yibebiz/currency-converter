@@ -65,6 +65,11 @@ div.input-element button {
   color:teal;
   
 }
+.waiting{
+  color:green;
+  font-style:italic;
+  font-size:small;
+}
 
 div.input-element button {
    background:#ff8c00;
